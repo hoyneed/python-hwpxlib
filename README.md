@@ -29,14 +29,32 @@ hwpxlib 패키지 python에서 쉽게 사용할 수 있게 만든 github repo �
 - Subprocess로 hwpx_loader.py에 hwpx_jar_path : hwpxlib jar 위치, file_path : 한글추출을 원하는 .hwpx 파일 위치를 넣어주세요
 
 ```python
+## local
 hwpx_text = subprocess.run(["python", "hwpx_loader.py", "--hwpx_jar_path",  'hwpxlib jar 위치', "--file_path", '한글추출을 원하는 .hwpx 파일 위치'], capture_output=True, text=True)
 
 print(hwpx_text.stdout)
+
+## fask
+python hwpx_flask.py
+
+import requests
+
+url = "http://localhost:7860/extract-text"
+file_path = "한글추출을 원하는 .hwpx 파일 위치"  
+
+with open(file_path, 'rb') as f:
+    files = {'file': (file_path, f)}
+    response = requests.post(url, files=files)
+
+response.json()
 ```
 
 
+### Docker
 
+```python
 
+docker build -t test:test .
+docker run -p 7860:7860 test:test
 
-
-
+```

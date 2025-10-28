@@ -1,4 +1,5 @@
 # Python-hwpxlib
+
 [hwpxlib 바로가기](https://github.com/neolord0/hwpxlib)
 
 hwpxlib 패키지 python에서 쉽게 사용할 수 있게 만든 github repo 입니다.
@@ -10,9 +11,9 @@ hwpxlib 패키지 python에서 쉽게 사용할 수 있게 만든 github repo �
 ### 필수 설치
 
 - 해당 방법은 Java가 사용하시는 OS에 설치되야 합니다.
-  - Maven Compile을 통해서 hwplib github를 .jar로 컴파일을 수행합니다.
-    - mac OS 환경에서 Java 8버전으로 컴파일을 수행했으며, 사용한 pom.xml은 'compile_src' 안에 있습니다. (기존 hwpxlib는 Java 7사용)
-    -  Maven 컴파일이 어려울 경우에는 [mvnrepository](https://mvnrepository.com/artifact/kr.dogfoot/hwplib/1.1.7) 에 올려져 있는 것을 다운받으셔도 됩니다. 
+    - Maven Compile을 통해서 hwplib github를 .jar로 컴파일을 수행합니다.
+        - Maven 컴파일이 어려울 경우에는 [mvnrepository](https://mvnrepository.com/artifact/kr.dogfoot/hwplib/1.1.7) 에 올려져 있는 것을
+          다운받으셔도 됩니다.
 
 - 기본적으로 python JPype package를 이용한 방법이며, hwpxlib의 다양한 기능중에 한글 추출기능만을 사용합니다.
 
@@ -20,41 +21,21 @@ hwpxlib 패키지 python에서 쉽게 사용할 수 있게 만든 github repo �
 
 ### 사용 방법
 
-- JPype 패키지를 설치해 주세요. [pypi](https://pypi.org/project/JPype1/)
-
-```python
-!pip install JPype1
-```
-
-- Subprocess로 hwpx_loader.py에 hwpx_jar_path : hwpxlib jar 위치, file_path : 한글추출을 원하는 .hwpx 파일 위치를 넣어주세요
-
-```python
-## local
-hwpx_text = subprocess.run(["python", "hwpx_loader.py", "--hwpx_jar_path",  'hwpxlib jar 위치', "--file_path", '한글추출을 원하는 .hwpx 파일 위치'], capture_output=True, text=True)
-
-print(hwpx_text.stdout)
-
-## fask
-python hwpx_flask.py
-
-import requests
-
-url = "http://localhost:7860/extract-text"
-file_path = "한글추출을 원하는 .hwpx 파일 위치"  
-
-with open(file_path, 'rb') as f:
-    files = {'file': (file_path, f)}
-    response = requests.post(url, files=files)
-
-response.json()
-```
-
-
 ### Docker
 
-```python
+[Docker Desktop](https://www.docker.com/products/docker-desktop)를 설치 후 실행해 주세요.
 
-docker build -t test:test .
+이후 프로젝트 루트 폴더에서 터미널을 실행 후 다음 명령어를 입력해 주세요.
+
+```bash
+
+docker build -t test:test.
+
 docker run -p 7860:7860 test:test
 
 ```
+
+위 명령어에서 test:test는 <이미지 이름>:<태그 이름> 을 의미합니다. 필요에 따라 바꾸시길 바랍니다.
+
+이후 testing.ipynb 파일을 Jupyter notebook을 사용해서 실행하시기 바랍니다. 만약 Jupyter Notebook이 설치되어 있지 않다면 `pip install jupyter`를 터미널에 입력해
+설치해 주세요.

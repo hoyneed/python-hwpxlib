@@ -4,48 +4,46 @@ import argparse
 
 
 def hwpx_extract(hwpx_jar_path, file_path):
-    ## jpype 시작
-    jpype.startJVM(
-        jpype.getDefaultJVMPath(),
-        "-Djava.class.path={classpath}".format(classpath=hwpx_jar_path),
-        convertStrings=True,
-    )
+    try:
+        ## jpype 시작
+        jpype.startJVM(
+            jpype.getDefaultJVMPath(),
+            "-Djava.class.path={classpath}".format(classpath=hwpx_jar_path),
+            convertStrings=True,
+        )
 
-    ## java package 가져오기
-    from kr.dogfoot.hwpxlib.reader import HWPXReader
-    from kr.dogfoot.hwpxlib.tool.textextractor import (
-        TextExtractor,
-        TextMarks,
-        TextExtractMethod,
-    )
+        ## java package 가져오기
+        from kr.dogfoot.hwpxlib.reader import HWPXReader
+        from kr.dogfoot.hwpxlib.tool.textextractor import (
+            TextExtractor,
+            TextMarks,
+            TextExtractMethod,
+        )
 
-    # HWPXFile = jpype.JClass("kr.dogfoot.hwpxlib.reader.HWPXReader")
-    HWPXFile = HWPXReader()
-    # TextExtractor = jpype.JClass("kr.dogfoot.hwpxlib.tool.textextractor.TextExtractor")
-    # TextExtractMethod = jpype.JClass(
-    #     "kr.dogfoot.hwpxlib.tool.textextractor.TextExtractMethod"
-    # )
-    # TextMarks = jpype.JClass("kr.dogfoot.hwpxlib.tool.textextractor.TextMarks")
+        hwpx_file = HWPXReader.fromFilepath(file_path)
+        text_extract_method = TextExtractMethod.InsertControlTextBetweenParagraphText
+        text_marks = (
+            TextMarks()
+            .lineBreakAnd("\n")
+            .paraSeparatorAnd("\n")
+            .fieldStartAnd("<div>")
+            .fieldEndAnd("</div>")
+            .containerStartAnd("<div>")
+            .containerEndAnd("</div>")
+            .rectangleStartAnd("<fieldset>")
+            .rectangleEndAnd("</fieldset>")
+            .tableStartAnd("<table>\n")
+            .tableEndAnd("\n</table>")
+        )
 
-    hwpx_file = HWPXFile.fromFilepath(file_path)
-    text_extract_method = TextExtractMethod.InsertControlTextBetweenParagraphText
-    text_marks = (
-        TextMarks()
-        .lineBreakAnd("\n")
-        .paraSeparatorAnd("\n")
-        .fieldStartAnd("<field>")
-        .fieldEndAnd("</field>")
-        .rectangleStartAnd("<square>")
-        .rectangleEndAnd("</square>")
-        .tableStartAnd("<table>\n")
-        .tableEndAnd("\n</table>")
-        .tableRowSeparatorAnd("\n")
-        .tableCellSeparatorAnd(";")
-    )
-
-    # 한글 추출
-    hwpxtext = TextExtractor.extract(hwpx_file, text_extract_method, True, text_marks)
-
+        # 한글 추출
+        hwpxtext = TextExtractor.extract(
+            hwpx_file, text_extract_method, True, text_marks
+        )
+    except Exception as e:
+        hwpxtext = "Error Occurred: " + str(e)
+    finally:
+        jpype.shutdownJVM()
     return hwpxtext
 
 
@@ -55,7 +53,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--hwpx_jar_path",
         type=str,
-        default="./hwpxlib-1.0.5.jar",
+        default="hwpxlib-1.0.7.jar",
         help="hwpxlib jar 위치",
     )
     parser.add_argument(

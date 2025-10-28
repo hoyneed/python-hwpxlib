@@ -59,7 +59,7 @@ def extract_text():
     file.save(file_name)
 
     # HWP 텍스트 추출 실행
-    hwp_jar_path = "./hwpxlib-1.0.5.jar"
+    hwp_jar_path = "hwpxlib-1.0.7.jar"
     text = process_hwp(file_name, hwp_jar_path, work_dir)
 
     # 임시 파일 삭제 docker 에서만

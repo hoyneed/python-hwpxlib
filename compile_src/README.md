@@ -1,8 +1,8 @@
 # hwpxlib compile
 
-**해당 compile은 Mac OS, JAVA 8에서 수행했습니다.**
+**해당 compile은 Windows 11, JAVA 7 버전에서 수행했습니다.**
 
-- compile_src/pom.xml은 JAVA 8기준으로 수정했습니다. (hwpxlib 는 JAVA 7)
+이 포크는 프로젝트를 위해 Java 소스 코드 일부 수정한 뒤 컴파일해 결과물이 다를 수 있습니다.
 
 1. git clone https://github.com/neolord0/hwpxlib
 2. hwpxlib 폴더로 이동

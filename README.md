@@ -23,7 +23,7 @@ hwpxlib 패키지 python에서 쉽게 사용할 수 있게 만든 github repo �
 
 ### Docker
 
-[Docker Desktop](https://www.docker.com/products/docker-desktop)를 설치 후 실행해 주세요.
+[Docker Desktop](https://www.docker.com/products/docker-desktop)을 설치 후 실행해 주세요.
 
 이후 프로젝트 루트 폴더에서 터미널을 실행 후 다음 명령어를 입력해 주세요.
 
@@ -34,8 +34,11 @@ docker build -t test:test.
 docker run -p 7860:7860 test:test
 
 ```
-
+hwpx 텍스트 변환 서버가 7860번 포트에 실행됩니다.
 위 명령어에서 test:test는 <이미지 이름>:<태그 이름> 을 의미합니다. 필요에 따라 바꾸시길 바랍니다.
+
+코드를 바꾸지 않고 서버를 재실행하고 싶을 때는 2번째 줄만 다시 실행하시면 됩니다.
+코드를 바꿀 경우에는 build부터 다시 하셔야 합니다. 생성된 이미지과 실행된 컨테이너 목록은 Docker Desktop 앱에서 확인하고 삭제할 수 있습니다.
 
 이후 testing.ipynb 파일을 Jupyter notebook을 사용해서 실행하시기 바랍니다. 만약 Jupyter Notebook이 설치되어 있지 않다면 `pip install jupyter`를 터미널에 입력해
 설치해 주세요.

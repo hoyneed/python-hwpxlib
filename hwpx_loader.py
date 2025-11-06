@@ -1,14 +1,14 @@
 import jpype
 import jpype.imports
 import argparse
+from cleaning import clean_rag_text, clean_common_noise
 
 
 def hwpx_extract(hwpx_jar_path, file_path):
     try:
         ## jpype 시작
         jpype.startJVM(
-            jpype.getDefaultJVMPath(),
-            "-Djava.class.path={classpath}".format(classpath=hwpx_jar_path),
+            classpath=[hwpx_jar_path],
             convertStrings=True,
         )
 
@@ -25,17 +25,23 @@ def hwpx_extract(hwpx_jar_path, file_path):
         text_marks = (
             TextMarks()
             .lineBreakAnd("\n")
-            .paraSeparatorAnd("\n")
-            .rectangleStartAnd("<div>")
-            .rectangleEndAnd("</div>")
+            .paraSeparatorAnd("\n\n")
             .tableStartAnd("<table>\n")
             .tableEndAnd("\n</table>")
+            .tabAnd("\t")
+            .containerStartAnd("\n\n")
+            .containerEndAnd("\n\n")
+            .fieldStartAnd("")
+            .fieldEndAnd("")
         )
 
         # 한글 추출
         hwpxtext = TextExtractor.extract(
             hwpx_file, text_extract_method, True, text_marks
         )
+        hwpxtext = clean_rag_text(hwpxtext)
+        hwpxtext = clean_common_noise(hwpxtext)
+
     except Exception as e:
         hwpxtext = "Error Occurred: " + str(e)
     finally:

@@ -62,9 +62,9 @@ def extract_text():
     hwp_jar_path = "hwpxlib-1.0.7.jar"
     text = process_hwp(file_name, hwp_jar_path, work_dir)
 
-    # 임시 파일 삭제 docker 에서만
-    if work_dir == "/app/python-hwpxlib":
-        os.remove(file_name)
+    # # 임시 파일 삭제 docker 에서만
+    # if work_dir == "/app/python-hwpxlib":
+    #     os.remove(file_name)
 
     return jsonify({"filename": file_name, "text": text})
 

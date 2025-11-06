@@ -1,0 +1,26 @@
+FROM ubuntu:noble
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    wget \
+    git \
+    python3 \
+    python3-pip \
+    openjdk-25-jdk-headless \
+    fonts-nanum* \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
+
+# 개발 환경에서는 소스 코드를 마운트하므로,
+# 원본의 COPY . ... 및 CMD 라인을 제거합니다.
+# 대신, VS Code가 접속할 수 있도록 컨테이너가 꺼지지 않게 유지합니다.
+CMD ["sleep", "infinity"]
